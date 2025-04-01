@@ -1,8 +1,8 @@
-package hiber;
+package web;
 
-import hiber.config.AppConfig;
-import hiber.model.User;
-import hiber.service.UserService;
+import web.config.AppConfig;
+import web.model.User;
+import web.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.SQLException;
