@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+<div>
+    <h1>Users test!!!</h1>
+</div>
+<div th:if="${getUsers}">
+    <h2>Список Users:</h2>
+    <div th:each="user : ${getUsers}">
+        <p th:text="${user.getId()} + ' ' + ${user.getFirstName()} + ' ' + ${user.getLastName()} + ' ' + ${user.getEmail()}">User list</p>
+    </div>
+</div>
+<!--<div th:if="${countCars != null and countCars.size() > 0}">-->
+<!--    <h2>Список нескольких автомобилей:</h2>-->
+<!--    <div th:each="car : ${countCars}">-->
+<!--        <p th:text="${car.getMake()} + ' ' + ${car.getModel()} + ' ' + ${car.getSeries()}">Car info</p>-->
+<!--    </div>-->
+<!--</div>-->
+</body>
+</html>
