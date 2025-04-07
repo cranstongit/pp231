@@ -2,10 +2,12 @@ package web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import web.model.User;
 import web.service.UserService;
 
@@ -26,53 +28,38 @@ public class UsersController {
     }
 
     @GetMapping("/newuser")
-    public String newUser(ModelMap model) {
+    public String createUser(ModelMap model) {
         model.addAttribute("newUser", new User());
         return "/new";
     }
 
-    @PostMapping
+    @PostMapping("/newuser")
     public String newUser(@ModelAttribute("newUser") User user) {
         userService.save(user);
         return "redirect:/";
     }
 
-//    @PostMapping()
-//    public String create(@ModelAttribute("person") @Valid Person person,
-//                         BindingResult bindingResult) {
-//        if (bindingResult.hasErrors())
-//            return "people/new";
-//
-//        peopleService.save(person);
-//        return "redirect:/people";
-//    }
-//
-//    @GetMapping
-//    public String edit(Model model, @PathVariable("id") int id) {
-//        model.addAttribute("editUser", userService.findOne(id));
-//        return "/users";
-//    }
-//
-//    @PatchMapping("/{id}")
-//    public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
-//                         @PathVariable("id") int id) {
-//        if (bindingResult.hasErrors())
-//            return "people/edit";
-//
-//        peopleService.update(id, person);
-//        return "redirect:/people";
-//    }
-//
-//    @DeleteMapping
-//    public String delete(@PathVariable("id") int id) {
-//        peopleService.delete(id);
-//        return "/users";
-//    }
+    @GetMapping("/deleteuser")
+    public String deleteUser(ModelMap model) {
+        return "/delete";
+    }
 
-//    @GetMapping
-//    public String method(@RequestParam(value = "id", required = false) Long id, @RequestParam(value = "name", required = false, Model model) String name) {
-//        model.addAtribute("") //кладем пару ключ значение в атрибут
-//        return "/uses";
-//    }
+    @PostMapping("/deleteuser")
+    public String removeUser(@RequestParam("id") long id) {
+        userService.delete(id);
+        return "redirect:/";
+    }
+
+    @GetMapping("/edituser")
+    public String chageUser(ModelMap model) {
+        model.addAttribute("updateUser", new User());
+        return "/edit";
+    }
+
+    @PostMapping("/edituser")
+    public String updateUser(@ModelAttribute("updateUser") long id, User user) {
+        userService.update(id, user);
+        return "redirect:/";
+    }
 
 }
