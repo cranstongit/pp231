@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Update User</title>
 </head>
 <body>
 <form th:method="POST" th:action="@{/edituser}" th:object="${updateUser}">
@@ -18,9 +18,9 @@
     <label for="email">Enter e-mail: </label>
     <input type="text" th:field="*{email}" id="email"/>
     <br/>
-    <input type="submit" value="Add new User">
+    <input type="submit" value="Change User">
 </form>
 <br/>
-<a th:href="@{/}">Перейти на страницу списка пользователей</a>
+<a th:href="@{/}">Список пользователей</a>
 </body>
 </html>

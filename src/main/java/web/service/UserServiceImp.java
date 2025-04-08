@@ -1,12 +1,12 @@
 package web.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import web.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import web.model.User;
 import web.repositories.UserRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -15,8 +15,7 @@ public class UserServiceImp implements UserService {
 
    private final UserRepository userRepository;
 
-   @Autowired
-    public UserServiceImp(UserRepository userRepository) {
+   public UserServiceImp(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -29,8 +28,14 @@ public class UserServiceImp implements UserService {
    @Transactional
    @Override
    public void update(long id, User user) {
-      user.setId(id);
-      userRepository.save(user);
+      User existingUser = userRepository.findById(id)
+              .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+
+      existingUser.setFirstName(user.getFirstName());
+      existingUser.setLastName(user.getLastName());
+      existingUser.setEmail(user.getEmail());
+
+      userRepository.save(existingUser);
    }
 
    @Transactional
@@ -43,4 +48,5 @@ public class UserServiceImp implements UserService {
    public List<User> findAll() {
       return userRepository.findAll();
    }
+
 }

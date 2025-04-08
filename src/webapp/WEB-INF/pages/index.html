@@ -12,11 +12,13 @@
         + ${user.getLastName()} + ', E-mail: ' + ${user.getEmail()}">List of Users</p>
     </div>
     <br/>
-    <a th:href="@{/deleteuser}">Перейти на страницу удаления пользователя</a>
+    <a th:href="@{/deleteuser}">Удалить пользователя</a>
     <br/>
     <br/>
-    <a th:href="@{/newuser}">Перейти на страницу создания нового пользователя</a>
+    <a th:href="@{/newuser}">Создать пользователя</a>
+    <br/>
+    <br/>
+    <a th:href="@{/edituser}">Отредактировать пользователя</a>
 </div>
-
 </body>
 </html>
