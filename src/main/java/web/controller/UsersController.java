@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import web.model.User;
 import web.service.UserService;
 
+import javax.persistence.EntityNotFoundException;
+
 @Controller
 @RequestMapping("/")
 public class UsersController {
@@ -45,7 +47,11 @@ public class UsersController {
 
     @PostMapping("/deleteuser")
     public String removeUser(@RequestParam("id") long id) {
-        userService.delete(id);
+        try {
+            userService.delete(id);
+        } catch (EntityNotFoundException e) {
+            return "redirect:/404";
+        }
         return "redirect:/";
     }
 
@@ -57,8 +63,18 @@ public class UsersController {
 
     @PostMapping("/edituser")
     public String updateUser(@RequestParam("id") long id, @ModelAttribute("updateUser") User user) {
-        userService.update(id, user);
+        try {
+            userService.update(id, user);
+        } catch (EntityNotFoundException e) {
+            return "redirect:/404";
+        }
         return "redirect:/";
+    }
+
+    @GetMapping("/404")
+    public String showError(ModelMap model) {
+        model.addAttribute("errorMessage", "Пользователь с таким id не найден");
+        return "/404";
     }
 
 }

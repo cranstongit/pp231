@@ -3,8 +3,8 @@ package web.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import web.dao.UserDAO;
 import web.model.User;
-import web.repositories.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -13,40 +13,46 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserServiceImp implements UserService {
 
-   private final UserRepository userRepository;
+   private final UserDAO userDAO;
 
-   public UserServiceImp(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+   public UserServiceImp(UserDAO userDAO) {
+      this.userDAO = userDAO;
+   }
 
    @Transactional
    @Override
    public void save(User user) {
-      userRepository.save(user);
+      userDAO.save(user);
    }
 
    @Transactional
    @Override
    public void update(long id, User user) {
-      User existingUser = userRepository.findById(id)
-              .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+      User existingUser = userDAO.find(id);
+      if (existingUser == null) {
+         throw new EntityNotFoundException("User with id " + id + " not found");
+      }
 
       existingUser.setFirstName(user.getFirstName());
       existingUser.setLastName(user.getLastName());
       existingUser.setEmail(user.getEmail());
 
-      userRepository.save(existingUser);
+      userDAO.save(existingUser);
    }
 
    @Transactional
    @Override
    public void delete(long id) {
-      userRepository.deleteById(id);
+      User existingUser = userDAO.find(id);
+      if (existingUser == null) {
+         throw new EntityNotFoundException("User with id " + id + " not found");
+      }
+      userDAO.delete(id);
    }
 
    @Override
    public List<User> findAll() {
-      return userRepository.findAll();
+      return userDAO.findAll();
    }
 
 }
